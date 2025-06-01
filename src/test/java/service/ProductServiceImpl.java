@@ -1,4 +1,4 @@
-package com.microcenter.web.service;
+package service;
 
 import com.microcenter.web.dto.ProductDTO;
 import com.microcenter.web.repository.ProductRepository;
@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -20,6 +20,5 @@ public class ProductServiceImpl implements ProductService{
                 .stream()
                 .sorted(Comparator.comparing(ProductDTO::getName))
                 .collect(Collectors.toList());
-//        return null;
     }
 }

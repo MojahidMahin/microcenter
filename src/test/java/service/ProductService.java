@@ -1,4 +1,4 @@
-package com.microcenter.web.service;
+package service;
 
 import com.microcenter.web.dto.ProductDTO;
 

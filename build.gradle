@@ -12,17 +12,24 @@ repositories {
     mavenCentral()
 }
 
+war {
+    archiveBaseName = 'microcenter'  // Simplified WAR name
+    archiveVersion = '1.0-SNAPSHOT'
+    enabled = true
+}
+
 dependencies {
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     implementation 'jstl:jstl:1.2'
     implementation 'org.webjars:bootstrap:5.3.1'
-    implementation 'ch.qos.logback:logback-classic:1.4.5'
+    implementation 'ch.qos.logback:logback-classic:1.5.13'
     implementation 'org.slf4j:slf4j-api:2.0.7'
     implementation 'org.slf4j:slf4j-simple:2.0.7'
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+//    testCompile group: 'junit', name: 'junit', version: '4.13.1' // old style
 //    for mock testing
-    testImplementation 'org.mockito:mockito-all:3.12.4'
-    testImplementation 'junit:junit:4.13.2'
+//    testImplementation 'org.mockito:mockito-all:5.12.4' // deprecated
+    testImplementation 'junit:junit:4.13.2' // old version
+    testImplementation 'org.mockito:mockito-core:5.11.0'
 }
