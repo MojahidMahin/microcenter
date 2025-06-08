@@ -1,5 +1,7 @@
 package com.microcenter.web.servlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.microcenter.web.dto.ProductDTO;
 import com.microcenter.web.repository.DummyProductRepositoryImpl;
 import com.microcenter.web.service.ProductService;
@@ -16,11 +18,18 @@ import java.util.List;
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
 
+//    logging context created by the logging framework
+    public static final Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
+
     private ProductService productService = new ProductServiceImpl(new DummyProductRepositoryImpl());
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        LOGGER.info("Serving home page");
+
         List<ProductDTO> allProducts = productService.findAllProductsSortedByName();
+
+        LOGGER.info("Found {} products", allProducts.size());
 
         req.setAttribute("products", allProducts);
 
