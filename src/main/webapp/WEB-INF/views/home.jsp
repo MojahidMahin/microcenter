@@ -3,41 +3,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.microcenter.web.dto.ProductDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>MicroCenter</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/webjars/bootstrap/5.3.1/css/bootstrap.min.css" />
-</head>
-<body class="pt-5 bg-dark text-white">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="<c:url value="/" />"> MicroCenter</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Deals</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search products..." aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+
+<%--Header inclusion--%>
+<%@ include file="/WEB-INF/includes/header.jsp" %>
+
+<%--Navigation bar inclusion--%>
+<%@include file="/WEB-INF/includes/navigation.jsp" %>
 
     <div class="container">
         <div class="d-flex align-items-center jumbotron">
@@ -66,12 +37,5 @@
             </c:forEach>
         </div>
     </div>
-
-    <footer class="text-white mt-5">
-        <div class="container">
-            <span>Copyright &copy; 2025 MicroCenter</span>
-        </div>
-    </footer>
-
-</body>
-</html>
+<%-- Footer inclusion --%>
+<%@ include file="/WEB-INF/includes/footer.jsp" %>
