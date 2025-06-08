@@ -1,12 +1,83 @@
-<configuration>
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+<!-- This Logback configuration file has slightly more feature -->
+<!--Logging style 1-->
+<configuration debug="true">
+<!--    File appender for logging to a file with rolling policy-->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${MY_LOG_DIR}/app.log</file>
+        <!-- Uncomment the next line to enable immediate flush the log -->
+<!--        <immediateFlush>true</immediateFlush>-->
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Daily rollover, with file size constraint -->
+            <fileNamePattern>${MY_LOG_DIR}/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+<!--            Max size before rollover is 20MB-->
+            <maxFileSize>20MB</maxFileSize>
+            <!-- keep 30 days' worth of history or 100MB total logs (optional) -->
+            <maxHistory>30</maxHistory>
+            <TotalSizeCap>100MB</TotalSizeCap>
+        </rollingPolicy>
+
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <root level="DEBUG">
+    <!--    Console appender for logging to standard output-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--   Log levels are TRACE, DEBUG, INFO, WARN, ERROR, FATAL respectively with their precedence.-->
+
+    <root level="INFO">
+        <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
+
+<!--Logging style 2-->
+
+<!--<configuration debug="true">-->
+
+<!--&lt;!&ndash;     Define a pattern for log messages &ndash;&gt;-->
+<!--    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>-->
+
+<!--    &lt;!&ndash; Console Appender &ndash;&gt;-->
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    &lt;!&ndash; Rolling File Appender &ndash;&gt;-->
+<!--    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${MY_LOG_DIR}/app.log</file>-->
+<!--        &lt;!&ndash; Uncomment the next line to enable immediate flush the log &ndash;&gt;-->
+<!--&lt;!&ndash;        <immediateFlush>true</immediateFlush>&ndash;&gt;-->
+
+<!--        &lt;!&ndash; Rolling policy: rotate daily, keep 30 days &ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${MY_LOG_DIR}/app.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+<!--            <maxHistory>30</maxHistory>-->
+<!--        </rollingPolicy>-->
+
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    &lt;!&ndash;    LOG levels are TRACE, DEBUG, INFO, WARN, ERROR, FATAL respectively with their precedence.&ndash;&gt;-->
+
+<!--    &lt;!&ndash; Root logger (logs everything of level INFO and above) &ndash;&gt;-->
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="CONSOLE" />-->
+<!--        <appender-ref ref="FILE" />-->
+<!--    </root>-->
+
+<!--</configuration>-->
