@@ -12,4 +12,14 @@
         <servlet-name>Server Time</servlet-name>
         <url-pattern>/server-time</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/notFound.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/error.jsp</location>
+    </error-page>
 </web-app>

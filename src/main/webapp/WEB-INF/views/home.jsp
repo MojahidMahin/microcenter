@@ -1,8 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ page import="java.util.List" %>
 <%@ page import="com.microcenter.web.dto.ProductDTO" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--Header inclusion--%>
 <%@ include file="/WEB-INF/includes/header.jsp" %>
