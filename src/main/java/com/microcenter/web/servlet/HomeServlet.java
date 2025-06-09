@@ -31,13 +31,6 @@ public class HomeServlet extends HttpServlet {
 
         LOGGER.info("Found {} products", allProducts.size());
 
-        // Simulating a performance issue by logging a large number of messages.
-        // This is just for demonstration purposes and should not be done in production code.
-
-        for(int i = 0; i < 10000; i++) {
-            LOGGER.info("This is a test log message {} ", i);
-        }
-
         req.setAttribute("products", allProducts);
 
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
