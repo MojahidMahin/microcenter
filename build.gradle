@@ -20,18 +20,27 @@ war {
 
 dependencies {
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     implementation 'jstl:jstl:1.2'
     implementation 'org.webjars:bootstrap:5.3.1'
 
+//    for logging
     implementation 'ch.qos.logback:logback-core:1.5.18'
     implementation 'ch.qos.logback:logback-classic:1.5.18'
     implementation 'org.slf4j:slf4j-api:2.0.7'
     implementation 'org.slf4j:slf4j-simple:2.0.7'
 
+//    for validation
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
+    implementation 'org.glassfish:jakarta.el:4.0.0' // EL implementation
+
+//    for testing
 //    testCompile group: 'junit', name: 'junit', version: '4.13.1' // old style
+
+    testImplementation 'junit:junit:4.13.2' // old version
 //    for mock testing
 //    testImplementation 'org.mockito:mockito-all:5.12.4' // deprecated
-    testImplementation 'junit:junit:4.13.2' // old version
     testImplementation 'org.mockito:mockito-core:5.11.0'
 }

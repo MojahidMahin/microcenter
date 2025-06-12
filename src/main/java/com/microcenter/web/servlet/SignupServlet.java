@@ -1,10 +1,13 @@
 package com.microcenter.web.servlet;
 
 import com.microcenter.web.dto.UserDTO;
-import com.microcenter.web.repository.UserRepository;
 import com.microcenter.web.repository.UserRepositoryImpl;
 import com.microcenter.web.service.UserService;
 import com.microcenter.web.service.UserServiceImpl;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidationException;
+import jakarta.validation.ValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
@@ -23,7 +29,7 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOGGER.info("Serving signup page");
+        LOGGER.info("Serving signup page from SignupServlet");
 
         // Forward the request to the signup JSP page
         req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
@@ -31,27 +37,43 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOGGER.info("Processing signup form submission");
+        LOGGER.info("Processing signup form submission from SignupServlet's doPost method");
 
         UserDTO userDTO = copyParametersTo(req);
-        if (isValid(userDTO)) {
-            LOGGER.info("User signup data is valid: {}", userDTO);
-            // Here you would typically save the user to a database
-            userService.saveUser(userDTO);
-            // Redirect to home page after successful signup
-            resp.sendRedirect("/home");
-        } else {
-            LOGGER.warn("Invalid signup data: {}", userDTO);
-            req.setAttribute("errorMessage", "Invalid signup data. Please try again.");
+
+        Map<String, String> errors = validate(userDTO);
+
+
+        if (!errors.isEmpty()) {
+            LOGGER.warn("Validation errors found: {}", errors);
+            req.setAttribute("errors", errors);
             req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
+        } else {
+            LOGGER.info("No validation errors found for UserDTO: {}", userDTO);
+            userService.saveUser(userDTO);
+            resp.sendRedirect("/home");
         }
+
+
+//        if (isValid(userDTO)) {
+//            LOGGER.info("User signup data is valid: {}", userDTO);
+//            // Here you would typically save the user to a database
+//            userService.saveUser(userDTO);
+//            // Redirect to home page after successful signup
+//            resp.sendRedirect("/home");
+//        } else {
+//            LOGGER.warn("Invalid signup data: {}", userDTO);
+//            req.setAttribute("errorMessage", "Invalid signup data. Please try again.");
+//            req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
+//        }
+
     }
 
     private UserDTO copyParametersTo(HttpServletRequest req) {
         var userDTO = new UserDTO();
         userDTO.setUsername(req.getParameter("username"));
         userDTO.setPassword(req.getParameter("password"));
-        userDTO.setPasswordConfirmed(req.getParameter("passwordConfirmed"));
+        userDTO.setPasswordConfirmed(req.getParameter("passwordConfirm"));
         userDTO.setEmail(req.getParameter("email"));
         userDTO.setFirstName(req.getParameter("firstName"));
         userDTO.setLastName(req.getParameter("lastName"));
@@ -59,7 +81,51 @@ public class SignupServlet extends HttpServlet {
         return userDTO;
     }
 
-    private boolean isValid(UserDTO userDTO) {
-        return true;
+//    private boolean isValid(UserDTO userDTO) {
+//
+//        try {
+//            var validatorFactory = Validation.buildDefaultValidatorFactory();
+//            var validator = validatorFactory.getValidator();
+//
+//            Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
+//            if (!violations.isEmpty()) {
+//                for (ConstraintViolation<UserDTO> violation : violations) {
+//                    LOGGER.warn("User Validation error: {} - {}", violation.getPropertyPath(), violation.getMessage());
+//                }
+//                return false;
+//            }
+//            LOGGER.info("UserDTO is valid");
+//            return true;
+//        } catch (ValidationException e) {
+//            LOGGER.error("Failed to create ValidatorFactory", e);
+//            throw new RuntimeException("Validation failed", e);
+//        }
+//    }
+
+    private Map<String, String> validate(UserDTO userDTO) {
+        try {
+            var validatorFactory = Validation.buildDefaultValidatorFactory();
+            var validator = validatorFactory.getValidator();
+
+            Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
+
+            Map<String, String> errors = new HashMap<>();
+
+            for (ConstraintViolation<UserDTO> violation : violations) {
+                String path = violation.getPropertyPath().toString();
+                String message = violation.getMessage();
+                String errorField = errors.get(path);
+                if (errors.containsKey(path)) {
+                    errors.put(path, errorField + " <br/> " + message);
+                } else {
+                    errors.put(path, message);
+                }
+            }
+
+            return errors;
+        } catch (ValidationException e) {
+            LOGGER.error("Failed to create ValidatorFactory", e);
+            throw new RuntimeException("Validation failed", e);
+        }
     }
 }
