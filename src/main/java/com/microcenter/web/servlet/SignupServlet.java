@@ -45,6 +45,16 @@ public class SignupServlet extends HttpServlet {
             LOGGER.warn("Validation errors found: {}", errors);
             req.setAttribute("errors", errors);
             req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
+        } else if (userService.isNotUniqueUsername(userDTO)) {
+            LOGGER.info("Username is not unique: {}", userDTO.getUsername());
+            errors.put("Username", "Username is not unique");
+            req.setAttribute("errors", errors);
+            req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
+        } else if (userService.isNotUniqueEmail(userDTO)) {
+            LOGGER.info("Email is not unique: {}", userDTO.getEmail());
+            errors.put("Email", "Email is not unique");
+            req.setAttribute("errors", errors);
+            req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
         } else {
             LOGGER.info("No validation errors found for UserDTO: {}", userDTO);
             userService.saveUser(userDTO);
