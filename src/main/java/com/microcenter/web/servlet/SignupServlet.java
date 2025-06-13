@@ -4,10 +4,7 @@ import com.microcenter.web.dto.UserDTO;
 import com.microcenter.web.repository.UserRepositoryImpl;
 import com.microcenter.web.service.UserService;
 import com.microcenter.web.service.UserServiceImpl;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.ValidationException;
-import jakarta.validation.ValidatorFactory;
+import com.microcenter.web.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
@@ -41,8 +36,10 @@ public class SignupServlet extends HttpServlet {
 
         UserDTO userDTO = copyParametersTo(req);
 
-        Map<String, String> errors = validate(userDTO);
+//        Map<String, String> errors = validate(userDTO);
 
+//        generate validation errors using ValidationUtil class
+        Map<String, String> errors = ValidationUtil.getInstance().validate(userDTO);
 
         if (!errors.isEmpty()) {
             LOGGER.warn("Validation errors found: {}", errors);
@@ -102,30 +99,30 @@ public class SignupServlet extends HttpServlet {
 //        }
 //    }
 
-    private Map<String, String> validate(UserDTO userDTO) {
-        try {
-            var validatorFactory = Validation.buildDefaultValidatorFactory();
-            var validator = validatorFactory.getValidator();
-
-            Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
-
-            Map<String, String> errors = new HashMap<>();
-
-            for (ConstraintViolation<UserDTO> violation : violations) {
-                String path = violation.getPropertyPath().toString();
-                String message = violation.getMessage();
-                String errorField = errors.get(path);
-                if (errors.containsKey(path)) {
-                    errors.put(path, errorField + " <br/> " + message);
-                } else {
-                    errors.put(path, message);
-                }
-            }
-
-            return errors;
-        } catch (ValidationException e) {
-            LOGGER.error("Failed to create ValidatorFactory", e);
-            throw new RuntimeException("Validation failed", e);
-        }
-    }
+//    private Map<String, String> validate(UserDTO userDTO) {
+//        try {
+//            var validatorFactory = Validation.buildDefaultValidatorFactory();
+//            var validator = validatorFactory.getValidator();
+//
+//            Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
+//
+//            Map<String, String> errors = new HashMap<>();
+//
+//            for (ConstraintViolation<UserDTO> violation : violations) {
+//                String path = violation.getPropertyPath().toString();
+//                String message = violation.getMessage();
+//                String errorField = errors.get(path);
+//                if (errors.containsKey(path)) {
+//                    errors.put(path, errorField + " <br/> " + message);
+//                } else {
+//                    errors.put(path, message);
+//                }
+//            }
+//
+//            return errors;
+//        } catch (ValidationException e) {
+//            LOGGER.error("Failed to create ValidatorFactory", e);
+//            throw new RuntimeException("Validation failed", e);
+//        }
+//    }
 }

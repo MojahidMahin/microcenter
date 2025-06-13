@@ -1,5 +1,12 @@
 package com.microcenter.web.dto;
+import com.microcenter.web.util.PasswordEqual;
 import jakarta.validation.constraints.*;
+
+@PasswordEqual(
+        first = "Password",
+        second = "PasswordConfirmed",
+        message = "Password and confirmation must match"
+)
 
 public class UserDTO {
     @NotEmpty(message = "Username cannot be empty")
