@@ -11,7 +11,7 @@
             <form role="form" action="<c:url value='/signup' />" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control form-control-md" id="username" name="username" required>
+                    <input type="text" class="form-control form-control-md" id="username" value="${userDTO.getUsername()}" name="username" required>
                     <c:if test="${errors.Username != null}">
                         <small class="text-danger mt-2">
                             ${errors.Username}
@@ -21,16 +21,16 @@
                 </div>
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control form-control-md" id="firstName" name="firstName" required>
-                    <c:if test="${errors.firstName != null}">
+                    <input type="text" class="form-control form-control-md" id="firstName" value="${userDTO.getFirstName()}" name="firstName" required>
+                    <c:if test="${errors.FirstName != null}">
                         <small class="text-danger mt-2">
-                            ${errors.firstName}
+                            ${errors.FirstName}
                         </small>
                     </c:if>
                 </div>
                 <div class="mb-3">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control form-control-md" id="lastName" name="lastName" required>
+                    <input type="text" class="form-control form-control-md" id="lastName" value="${userDTO.getLastName()}" name="lastName" required>
                     <c:if test="${errors.LastName != null}">
                         <small class="text-danger mt-2">
                             ${errors.LastName}
@@ -39,7 +39,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control form-control-md" id="email" name="email" required
+                    <input type="email" class="form-control form-control-md" id="email" value="${userDTO.getEmail()}" name="email" required
                            placeholder="you@example.com">
                     <c:if test="${errors.Email != null}">
                         <small class="text-danger mt-2">
