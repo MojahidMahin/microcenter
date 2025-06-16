@@ -1,5 +1,7 @@
 package com.microcenter.web.service;
 
+import com.microcenter.web.domain.User;
+import com.microcenter.web.dto.LoginDTO;
 import com.microcenter.web.dto.UserDTO;
 
 public interface UserService {
@@ -8,4 +10,6 @@ public interface UserService {
     boolean isNotUniqueUsername(UserDTO userDTO);
 
     boolean isNotUniqueEmail(UserDTO userDTO);
+
+    User verifyUser(LoginDTO loginDTO);
 }

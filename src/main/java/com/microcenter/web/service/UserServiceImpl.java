@@ -1,7 +1,9 @@
 package com.microcenter.web.service;
 
 import com.microcenter.web.domain.User;
+import com.microcenter.web.dto.LoginDTO;
 import com.microcenter.web.dto.UserDTO;
+import com.microcenter.web.exceptions.UserNotFoundException;
 import com.microcenter.web.repository.UserRepository;
 import com.microcenter.web.servlet.SignupServlet;
 import org.slf4j.Logger;
@@ -47,6 +49,20 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean isNotUniqueEmail(UserDTO userDTO) {
         return userRepository.findByEmail(userDTO.getEmail()).isPresent();
+    }
+
+    @Override
+    public User verifyUser(LoginDTO loginDTO) {
+        var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found with provided username"));
+        LOGGER.info("UserService Verifying user with username: {}", loginDTO.getUsername());
+        var encryptedPass = encryptPassword(loginDTO.getPassword());
+        if (user.getPassword().equals(encryptedPass)) {
+            LOGGER.info("UserService verified User successfully: {}", user);
+            return user;
+        } else {
+            LOGGER.warn("Incorrect password for user: {}", loginDTO.getUsername());
+            throw new UserNotFoundException("Incorrect username or password");
+        }
     }
 
     private String encryptPassword(String password) {

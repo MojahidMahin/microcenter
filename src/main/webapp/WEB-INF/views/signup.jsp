@@ -66,7 +66,9 @@
                         </small>
                     </c:if>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                <button type="submit" class="mb-4 btn btn-primary w-100">Sign Up</button>
+
+                <a href="<c:url value="/login" />" class="btn btn-primary w-100">Log In</a>
             </form>
         </div>
     </div>

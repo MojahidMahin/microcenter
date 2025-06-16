@@ -41,24 +41,20 @@ public class SignupServlet extends HttpServlet {
 //        generate validation errors using ValidationUtil class
         Map<String, String> errors = ValidationUtil.getInstance().validate(userDTO);
 
+
+
         if (!errors.isEmpty()) {
             LOGGER.warn("Validation errors found: {}", errors);
             LOGGER.info("UserDTO is not valid: {}", userDTO);
-            req.setAttribute("userDTO", userDTO);
-            req.setAttribute("errors", errors);
-            req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
+            reqSet(req, resp, userDTO, errors);
         } else if (userService.isNotUniqueUsername(userDTO)) {
             LOGGER.info("Username is not unique: {}", userDTO.getUsername());
             errors.put("Username", "Username is not unique");
-            req.setAttribute("userDTO", userDTO);
-            req.setAttribute("errors", errors);
-            req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
+            reqSet(req, resp, userDTO, errors);
         } else if (userService.isNotUniqueEmail(userDTO)) {
             LOGGER.info("Email is not unique: {}", userDTO.getEmail());
             errors.put("Email", "Email is not unique");
-            req.setAttribute("userDTO", userDTO);
-            req.setAttribute("errors", errors);
-            req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
+            reqSet(req, resp, userDTO, errors);
         } else {
             LOGGER.info("No validation errors found for UserDTO: {}", userDTO);
             userService.saveUser(userDTO);
@@ -78,6 +74,12 @@ public class SignupServlet extends HttpServlet {
 //            req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
 //        }
 
+    }
+
+    private void reqSet(HttpServletRequest req, HttpServletResponse resp, UserDTO userDTO, Map<String, String> errors) throws ServletException, IOException {
+        req.setAttribute("userDTO", userDTO);
+        req.setAttribute("errors", errors);
+        req.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(req, resp);
     }
 
     private UserDTO copyParametersTo(HttpServletRequest req) {
