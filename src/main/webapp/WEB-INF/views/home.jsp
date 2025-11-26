@@ -7,12 +7,17 @@
 <%--Navigation bar inclusion--%>
 <%@include file="/WEB-INF/includes/navigation.jsp" %>
 
+<%--taglib inclusion--%>
+<%@taglib prefix="sec" uri="http://microcenter.com/functions" %>
+
 <div class="container">
     <div class="d-flex align-items-center jumbotron">
         <img src="<c:url value="/image/micro_center.png"/>" style="height: 100px" class="me-3 img-fluid"
              alt="MicroCenter Logo" />
-        <c:if test="${sessionScope.user != null}">
-            <h1 class="display-4">Hello, <c:out value="${sessionScope.user.getUsername()}"/>!</h1>
+<%--        <c:if test="${sessionScope.user != null}">--%>
+        <c:if test="${sec:isAuthenticated(pageContext.request)}">
+<%--            <h1 class="display-4">Hello, <c:out value="${sessionScope.user.getUsername()}"/>!</h1>--%>
+            <h1 class="display-4">Hello, <c:out value="${sec:getCurrentUser(pageContext.request).firstName}"/>!</h1>
         </c:if>
         <h1 class="display-4 pt-1 pb-2">Welcome to MicroCenter!</h1>
     </div>

@@ -58,7 +58,7 @@ public class SignupServlet extends HttpServlet {
         } else {
             LOGGER.info("No validation errors found for UserDTO: {}", userDTO);
             userService.saveUser(userDTO);
-            resp.sendRedirect("/home");
+            resp.sendRedirect("/login");
         }
 
 

@@ -7,6 +7,7 @@ import com.microcenter.web.exceptions.UserNotFoundException;
 import com.microcenter.web.repository.UserRepositoryImpl;
 import com.microcenter.web.service.UserService;
 import com.microcenter.web.service.UserServiceImpl;
+import com.microcenter.web.util.SecurityContext;
 import com.microcenter.web.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,15 +65,20 @@ public class LoginServlet extends HttpServlet{
 
     private void login(LoginDTO loginDTO, HttpServletRequest req) throws UserNotFoundException{
         User user = userService.verifyUser(loginDTO);
-//        get the old session and invalidate it
-        HttpSession oldSession = req.getSession(false);
-        if (oldSession != null) {
-            oldSession.invalidate();
-        }
 
-//        put the user in the session
-        HttpSession newSession = req.getSession(true);
-        newSession.setAttribute("user", user);
+//        new method to login
+        SecurityContext.login(req, user);
+
+//        old method to login
+////        get the old session and invalidate it
+//        HttpSession oldSession = req.getSession(false);
+//        if (oldSession != null) {
+//            oldSession.invalidate();
+//        }
+//
+////        put the user in the session
+//        HttpSession newSession = req.getSession(true);
+//        newSession.setAttribute("user", user);
         LOGGER.info("User logged in successfully: {}", user.getUsername());
     }
 
