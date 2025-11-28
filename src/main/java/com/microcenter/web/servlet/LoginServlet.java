@@ -30,6 +30,12 @@ public class LoginServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOGGER.info("Serving login page");
+//        this parameter is set when the user logs out, for clarity see logout servlet send redirect line.
+        String logout = req.getParameter("logout");
+
+        if (logout != null && Boolean.parseBoolean(logout)) {
+            req.setAttribute("message", "You have been logged out successfully");
+        }
         // Forward the request to the login JSP page
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
 

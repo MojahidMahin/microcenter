@@ -6,6 +6,13 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="mt-4 text-center">Login</h2>
+            <div class="row text-center mb-4">
+                <c:if test="${message != null}">
+                    <div class="alert alert-success">
+                        ${message}
+                    </div>
+                </c:if>
+            </div>
             <form action="<c:url value="/login" />" method="post">
                 <div class="mb-3 form-group">
                     <label for="username" class="form-label">Username:</label>
