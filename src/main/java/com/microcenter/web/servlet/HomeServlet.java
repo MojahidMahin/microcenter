@@ -1,9 +1,11 @@
 package com.microcenter.web.servlet;
 
+//import com.microcenter.web.repository.ProductRepositoryImpl;
+import com.microcenter.web.repository.ProductRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.microcenter.web.dto.ProductDTO;
-import com.microcenter.web.repository.DummyProductRepositoryImpl;
+//import com.microcenter.web.repository.DummyProductRepositoryImpl;
 import com.microcenter.web.service.ProductService;
 import com.microcenter.web.service.ProductServiceImpl;
 
@@ -21,7 +23,15 @@ public class HomeServlet extends HttpServlet {
 //    logging context created by the logging framework
     public static final Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
 
-    private ProductService productService = new ProductServiceImpl(new DummyProductRepositoryImpl());
+        private ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
+
+
+//    private ProductService productService = new ProductServiceImplTest();
+
+
+    /**
+     * Handles GET request; serves home page with products
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

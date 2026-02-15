@@ -33,15 +33,29 @@
                 <p class="card-text">
                     Price: $<c:out value="${product.price}"/>
                 </p>
-                <p class="card-text">
-                    Category: <c:out value="${product.category}"/>
-                </p>
-                <a href="#" class="card-link btn btn-outline-info">
+<%--                <p class="card-text">--%>
+<%--                    Category: <c:out value="${product.category}"/>--%>
+<%--                </p>--%>
+                <a href="#" class="card-link btn btn-outline-info"
+                onclick="addToCart(${product.id})">
                     Add to Cart
                 </a>
+
+                <form style="visibility: hidden" id="addToCart_${product.id}" method="post"
+                      action="<c:url value='/add-to-cart?productID=${product.id}' />">
+                </form>
             </div>
         </c:forEach>
     </div>
 </div>
+
+<script>
+    function addToCart(productId) {
+        let form = document.getElementById("addToCart_" + productId);
+        form.submit();
+    }
+</script>
+
+
 <%-- Footer inclusion --%>
 <%@ include file="/WEB-INF/includes/footer.jsp" %>
